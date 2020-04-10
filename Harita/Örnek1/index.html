@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset='utf-8' />
+    <meta property="og:title" content="Puppy Paws">
+    <title>Puppy Paws</title>
+    <meta property="og:description" content="Finding THE neighborhood for you and your dogs.">
+    <meta property="og:type" content="interactive web">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='d3.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css" rel="stylesheet">
+
+    <style type="text/css">
+        #leftBox {
+            display: block;
+            position: fixed;
+            width: 399px;
+            height: 100%;
+            opacity: 0.9;
+            transform: translateX(0);
+            transition: transform .5s ease;
+            transform-origin: 0 0;
+            -moz-transform-origin: 0 0;
+            -webkit-transform-origin: 0 0;
+            -ms-transform-origin: 0 0;
+            -o-transform-origin: 0 0;
+            background-color: #fff;
+            border-right: 1px solid #dcdcdc
+        }
+
+        #Header {
+            background-color: #e1b913;
+            height: 50px;
+            padding: 20px;
+            color: #000000;
+            font-weight: 600;
+            font-size: 32px;
+            font-family: "Comic Sans MS"
+        }
+
+        #Header img {
+            margin-top: -0.5px;
+            margin-right: 5px;
+            float: left;
+            height: 38px;
+            opacity: 1
+        }
+
+        #Bottom {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e1b913;
+            width: 399px;
+            height: 50px;
+            position: absolute;
+            vertical-align: middle;
+            box-sizing: border-box;
+            padding: 0 20px;
+            left: 0;
+            bottom: 0
+        }
+
+        #Bottom a {
+            font-family: Source Code Pro, monospace;
+            display: inline-block;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 400;
+            font-size: 13px;
+            color: #000000;
+            border: none;
+            background: none;
+            outline: none;
+            text-decoration: none;
+            align-self: center
+        }
+
+        .mapboxgl-canvas-container.mapboxgl-interactive,
+        .mapboxgl-ctrl-nav-compass {
+            cursor: pointer !important
+        }
+
+        .mapboxgl-canvas-container.mapboxgl-interactive:active {
+            cursor: -webkit-grabbing !important;
+            cursor: -moz-grabbing !important;
+            cursor: grabbing !important
+        }
+
+        .mapboxgl-ctrl-group {
+            border-radius: 2px;
+            box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .2)
+        }
+
+        .mapboxgl-ctrl-scale {
+            background-color: transparent;
+            border-width: medium 1px 1px;
+            height: 12px;
+            line-height: 11px
+        }
+
+        .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+            margin: 0 0 50px 20px
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <style>
+        .marker {
+            background-image: url('https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/pin.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Comic Sans MS';
+        }
+    </style>
+    <style>
+        #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+
+            left: 300px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1.5px solid rgba(0, 0, 0, 0.4);
+            font-family: "Comic Sans MS";
+        }
+
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        #menu a:last-child {
+            border: none;
+        }
+
+        #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+
+        #menu a.active {
+            background-color: #f0cb39;
+            color: #363636;
+        }
+
+        #menu a.active:hover {
+            background: #30a478;
+        }
+    </style>
+</head>
+<nav id="menu"></nav>
+
+<body id="body">
+    <div id='map'></div>
+
+    <body data-gr-c-s-loaded="true" class="standardMode">
+
+        <div id="scroll">
+            <div class="scroll__graphic">
+                <div id="leftBox">
+                    <div id="Header">
+                        <img src="dog-pawprints.png"> ~Puppy Paws~
+                    </div>
+                    <div id="introduction" class="introduction">
+                        <h3>
+                            The map is to recommend nearby dog-friendly places for a dog person. <br> We have
+                            dog-friendly restaurants, dog services and dog runs locations.<br> Clicking on the map, and
+                            you would get the nearest five dog-friendly places.<br> You can also change the view of the
+                            map using control and your mouse, to see nearby buildings.<br />
+                            <br><br>In New York City overall, there are around 500 restaurants where you can bring your
+                            dog, around 450 pet clinics and hospitals for dog care, and around 90 dog-walking parks for
+                            weekend fun with your buddies.
+                        </h3>
+                    </div>
+                    <div id="Bottom">
+                        <a id="methodandposter" class="footerTextLink"
+                            href="https://pdfhost.io/v/FBbG2E+F_03_Ling_Zhang_Posterspdf.pdf"
+                            target="_blank">Methods&Poster</a>
+                        <a id="github" class="footerTextLink" href="https://github.com/ZiweiLing/ZiweiLing.github.io"
+                            target="_blank">GitHub</a>
+                        <a id="Aria (Ziwei) Ling" class="footerTextLink"
+                            href="https://www.linkedin.com/in/aria-ling-1b809612b/" target="_blank">Author: Aria</a>
+                        <a id="Haoran Zhang" class="footerTextLink"
+                            href="https://www.linkedin.com/in/haoran-zhang-0707/" target="_blank">Author: HAORAN</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @media only screen and (max-width: 1700px) {
+                #main {
+                    margin-left: calc(400px * 0.9);
+                    width: calc(100% - (400px * 0.9));
+                }
+
+                #leftBox {
+                    transform: scale(0.9);
+                    height: calc(100% / 0.9)
+                }
+
+                #main {
+                    margin-left: calc(400px * 0.8);
+                    width: calc(100% - (400px * 0.8));
+                }
+
+                #leftBox {
+                    height: calc(100% / 0.90);
+                    transform: scale(0.90)
+                }
+
+                #main {
+                    margin-left: calc(400px * 0.85);
+                    width: calc(100% - (400px * 0.85));
+                }
+
+                #leftBox {
+                    transform: scale(0.85);
+                    height: calc(100% / 0.85)
+                }
+
+                #main {
+                    margin-left: calc(400px * 0.80);
+                    width: calc(100% - (400px * 0.80));
+                }
+
+                #leftBox {
+                    transform: scale(0.80);
+                    height: calc(100% / 0.80)
+                }
+
+                #main {
+                    margin-left: calc(400px * 0.75);
+                    width: calc(100% - (400px * 0.75));
+                }
+
+                #leftBox {
+                    transform: scale(0.75);
+                    height: calc(100% / 0.75)
+                }
+            }
+
+            @media only screen and (max-width: 820px) {
+                * {
+                    transition: none !important;
+                }
+
+                #main {
+                    position: relative;
+                    margin-left: 0;
+                    height: calc(100% - 190px - 262px);
+                    width: 100%;
+                    top: 262px;
+                    bottom: 190px;
+                    z-index: -1;
+                }
+
+                #leftBox {
+                    transform: scale(1);
+                    height: 190px;
+                    width: 100%;
+                    bottom: 0;
+                    border: none;
+                    z-index: 100;
+                }
+
+                #Bottom {
+                    position: fixed;
+                    width: 100%;
+                    min-width: 400px;
+                    height: 55px;
+                }
+
+                #Bottom a {
+                    font-size: 18px;
+                }
+
+                #Bottom>#storiesFooterLink {
+                    display: inline-block;
+                }
+            }
+        </style>
+        <script>
+            //1.bounds and map
+            var bounds = [
+                [-74.04728500751165, 40.68392799015035], // Southwest coordinates
+                [-73.91058699000139, 40.87764500765852]  // Northeast coordinates
+            ];
+
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYXJpYWxpbmciLCJhIjoiY2syeGwwc2JiMGNuMDNvcnNjMWZpa3JqMiJ9.qqZLsQKqdPcpjGFWfMD--Q';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/arialing/ck2xtyqf616711cldcwrrl3n3',
+                center: [-74, 40.8],
+                zoom: 10
+            });
+
+
+            //2.zoom
+            map.addControl(new mapboxgl.NavigationControl());
+
+            //3.geolocation
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }));
+
+            //4.data: parks, apartments
+            var parkData;
+            var restData;
+            var serviceData;
+            var dataall = [];
+            Promise.all([d3.json("https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/NYC%20Parks%20Dog%20Runs.geojson"), d3.json("https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/dog_restaurant_NYC.geojson"), d3.json("https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/dog_service_vet_NYC.geojson")])
+                .then(function (data) {
+                    // console.log(data)
+                    parkData = data[0];
+                    restData = data[1];
+                    serviceData = data[2];
+                    dataall = data;
+                    drawMap(parkData, restData, serviceData)
+                });
+
+            function drawMap(parkData, restData, serviceData) {
+                map.on('load', function () {
+                    map.loadImage('https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/pawprint.png', function (error, image) {//we load the image icon as we did in the previous file
+                        map.addImage('dog', image);
+
+                        map.addLayer({
+                            "id": "parks",
+                            "type": "symbol",
+                            "source": {
+                                "type": "geojson",
+                                "data": parkData,//this is where we reference the geojson data from above
+                            },
+                            "layout": {//this is where we style the display- size the icons, show the labels etc. for placement and size
+                                "icon-image": "dog",
+                                "icon-size": 0.05
+                            }
+                        });
+                        // Create a popup, but don't add it to the map yet.
+                        var popup1 = new mapboxgl.Popup({
+                            closeButton: false,
+                            closeOnClick: false
+                        });
+
+                        map.on('mouseenter', 'parks', function (e) {
+                            // Change the cursor style as a UI indicator.
+                            map.getCanvas().style.cursor = 'pointer';
+
+                            var coordinates1 = e.features[0].geometry.coordinates.slice();
+                            var description1 = e.features[0].properties.name;
+
+
+                            // Ensure that if the map is zoomed out such that multiple
+                            // copies of the feature are visible, the popup appears
+                            // over the copy being pointed to.
+                            while (Math.abs(e.lngLat.lng - coordinates1[0]) > 180) {
+                                coordinates1[0] += e.lngLat.lng > coordinates1[0] ? 360 : -360;
+                            }
+
+                            // Populate the popup and set its coordinates
+                            // based on the feature found.
+                            popup1.setLngLat(coordinates1)
+                                .setHTML(description1)
+                                .addTo(map);
+                        });
+
+                        map.on('mouseleave', 'parks', function () {
+                            map.getCanvas().style.cursor = '';
+                            popup1.remove();
+                        });
+                    })
+
+                    map.loadImage('https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/dog-food.png', function (error, image) {//we load the image icon as we did in the previous file
+                        map.addImage('restaurant', image);
+
+                        map.addLayer({
+                            "id": "restaurants",
+                            "type": "symbol",
+                            "source": {
+                                "type": "geojson",
+                                "data": restData,//this is where we reference the geojson data from above
+                            },
+                            "layout": {//this is where we style the display- size the icons, show the labels etc. for placement and size
+                                "icon-image": "restaurant",
+                                "icon-size": 0.04
+                            }
+                        });
+                        // Create a popup, but don't add it to the map yet.
+                        var popup2 = new mapboxgl.Popup({
+                            closeButton: false,
+                            closeOnClick: false
+                        });
+
+                        map.on('mouseenter', 'restaurants', function (e) {
+                            // Change the cursor style as a UI indicator.
+                            map.getCanvas().style.cursor = 'pointer';
+
+                            var coordinates2 = e.features[0].geometry.coordinates.slice();
+                            var description2 = e.features[0].properties.name;
+
+                            // Ensure that if the map is zoomed out such that multiple
+                            // copies of the feature are visible, the popup appears
+                            // over the copy being pointed to.
+                            while (Math.abs(e.lngLat.lng - coordinates2[0]) > 180) {
+                                coordinates2[0] += e.lngLat.lng > coordinates2[0] ? 360 : -360;
+                            }
+
+                            // Populate the popup and set its coordinates
+                            // based on the feature found.
+                            popup2.setLngLat(coordinates2)
+                                .setHTML(description2)
+                                .addTo(map);
+                        });
+
+                        map.on('mouseleave', 'restaurants', function () {
+                            map.getCanvas().style.cursor = '';
+                            popup2.remove();
+                        });
+                    })
+
+                    map.loadImage('https://raw.githubusercontent.com/ZiweiLing/ZiweiLing.github.io/master/aid.png', function (error, image) {//we load the image icon as we did in the previous file
+                        map.addImage('aid', image);
+
+                        map.addLayer({
+                            "id": "service",
+                            "type": "symbol",
+                            "source": {
+                                "type": "geojson",
+                                "data": serviceData,//this is where we reference the geojson data from above
+                            },
+                            "layout": {//this is where we style the display- size the icons, show the labels etc. for placement and size
+                                "icon-image": "aid",
+                                "icon-size": 0.04
+                            }
+                        });
+                        // Create a popup, but don't add it to the map yet.
+                        var popup3 = new mapboxgl.Popup({
+                            closeButton: false,
+                            closeOnClick: false
+                        });
+
+                        map.on('mouseenter', 'service', function (e) {
+                            map.getCanvas().style.cursor = 'pointer';
+
+                            var coordinates3 = e.features[0].geometry.coordinates.slice();
+                            var description3 = e.features[0].properties.name;
+                            while (Math.abs(e.lngLat.lng - coordinates3[0]) > 180) {
+                                coordinates3[0] += e.lngLat.lng > coordinates3[0] ? 360 : -360;
+                            }
+
+                            // Populate the popup and set its coordinates
+                            // based on the feature found.
+                            popup3.setLngLat(coordinates3)
+                                .setHTML(description3)
+                                .addTo(map);
+                        });
+
+                        map.on('mouseleave', 'service', function () {
+                            map.getCanvas().style.cursor = '';
+                            popup3.remove();
+                        });
+                    })
+                })
+
+
+                //5. functions
+                //record longitude and latitude of datasets
+
+                var markers = [];
+                var isMarked = 0;   //a flag recording whether the map is marked
+                map.on('click', function (d) {
+                    var arr = [];
+                    var lon1 = d.lngLat.lng;    //this is all the click information from the mouse
+                    var lat1 = d.lngLat.lat;   //this is all the click information from the mouse
+                    for (var j = 0; j < dataall.length; j++) {
+                        if (visibilities[j] == 1) {
+                            continue;
+                        }
+                        for (var i = 0; i < dataall[j].features.length; i++) {
+                            var coords = dataall[j].features[i].geometry.coordinates;
+                            var lat = coords[1];
+                            var lon = coords[0];
+                            var distance = havarsine(lat1, lon1, lat, lon);
+                            arr.push({
+                                distance: distance,
+                                coords: coords
+                            });
+                        }
+
+                    }
+
+                    //find the nearest 5 locations
+                    var items = Object.keys(arr).map(function (key) {
+                        return [arr[key].coords, arr[key].distance];
+                    });
+                    //console.log(items);
+                    items.sort(function (first, second) {
+                        return first[1] - second[1];
+                    });
+                    var recommend = items.slice(0, 5);
+                    //console.log(recommend)
+                    //add markers to map
+                    for (var i = 0; i < recommend.length; i++) {
+                        // create a HTML element for each feature
+                        var el = document.createElement('div');
+                        el.className = 'marker';
+                        //if any former marker is on the map, remove it
+                        if (isMarked) {
+                            markers[i].remove();
+                        }
+                        // make a marker for each feature and add to the map
+                        markers[i] = new mapboxgl.Marker(el)
+                            .setLngLat(recommend[i][0])
+                            .addTo(map);
+                        // fly to the click location
+                        map.flyTo({
+                            center: recommend[i][0]
+                        });
+
+                    }
+                    isMarked = 1;
+                });
+            }
+
+            function havarsine(lat1, lon1, lat2, lon2) {
+                Number.prototype.toRad = function () {
+                    return this * Math.PI / 180;
+                }
+                var R = 6371; // km 
+                //has a problem with the .toRad() method below.
+                var x1 = lat2 - lat1;
+                var dLat = x1.toRad();
+                var x2 = lon2 - lon1;
+                var dLon = x2.toRad();
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c;
+
+                return d;
+            };
+
+            // 6. menu
+            var visibilities = [0, 0, 0];
+            var toggleableLayerIds = ['parks', 'restaurants', 'service'];
+            for (var i = 0; i < toggleableLayerIds.length; i++) {
+                var id = toggleableLayerIds[i];
+                var link = document.createElement('a');
+                link.href = '#';
+                link.className = 'active';
+                link.textContent = id;
+                link.location = i;
+                link.onclick = function (e) {
+                    var clickedLayer = this.textContent;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                    if (visibility === 'visible') {
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                        this.className = '';
+                        visibilities[this.location] = 1;
+                    } else {
+                        this.className = 'active';
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                        visibilities[this.location] = 0;
+                    };
+                };
+                var layers = document.getElementById('menu');
+                layers.appendChild(link);
+            };
+
+
+        </script>
+
+    </body>
+
+</html>
