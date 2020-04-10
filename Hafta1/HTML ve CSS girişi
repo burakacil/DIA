@@ -1,0 +1,87 @@
+ Haftamızdan bekleyebileceklerimiz:
+ 
+ Bu klasörde bulunan 
+  
+  index.html
+  
+  dosyamızı kullanarak  
+  
+-Temel HTML CSS bilgilerimizi edinmeye başlayıp.
+
+- d3.js kullanan "new york'umuzun köpek dostu mekanları" isimli çalışmaya bakıp javascript/harita 
+kullanımına dair örnek sahipliği edinmek.
+
+<< 
+
+BAŞLAMADAN EVVEL 
+
+         ,            __ \/ __            
+     /\^/`\          /o \{}/ o\   If I had a flower for each time
+    | \/   |         \   ()   /     I thought of you, my garden
+    | |    |          `> /\ <`   ,,,     would be full...
+    \ \    /  @@@@    (o/\/\o)  {{{}}                 _ _
+     '\\//'  @@()@@  _ )    (    ~Y~       @@@@     _{ ' }_
+       ||     @@@@ _(_)_   wWWWw .oOOo.   @@()@@   { `.!.` }
+       ||     ,/  (_)@(_)  (___) OO()OO    @@@@  _ ',_/Y\_,'
+       ||  ,\ | /)  (_)\     Y   'OOOO',,,(\|/ _(_)_ {_,_}
+   |\  ||  |\\|// vVVVv`|/@@@@    _ \/{{}}}\| (_)@(_)  |  ,,,
+   | | ||  | |;,,,(___) |@@()@@ _(_)_| ~Y~ wWWWw(_)\ (\| {{{}}
+   | | || / / {{}}} Y  \| @@@@ (_)#(_) \|  (___)   |  \| /~Y~
+    \ \||/ /\\|~Y~ \|/  | \ \/  /(_) |/ |/   Y    \|/  |//\|/
+jgs\ `\\//`,.\|/|//.|/\\|/\\|,\|/ //\|/\|.\\\| // \|\\ |/,\|/
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Murray Scott hocamızın kitabından aşırdığımız Haftamiz1.pdf dosyasındaki 17-36 sayfaları bu konuya aittir. 
+ 
+ A. HTML dili nedir, ne değildir? HTML tag'leri neredir?
+ 
+    HTML konusunda temel elemanlar 22-23 sayfalarında, burada da uygulama denemeleri var: 
+    https://www.w3schools.com/html/html_intro.asp 
+    https://www.w3schools.com/Html/html_basic.asp
+  
+ B. CSS tasarım aracımız HTML etiketlerini (tag'lerini) viral enfeksiyon gibi hedef alıp 
+    onları değiştirir, dönüştürür. Dil içinde dil adeta.  Örneklerimiz:
+    https://www.w3schools.com/css/css_examples.asp
+ 
+ C. Konsolumuz
+    Firefox (Ateş tilkisi) browser'ında Tools > Web Developer > Web Console
+    Chrome browser'ında View > Developer > Java Script Console 
+    aracılığıylan sayfalarımızdaki problemleri, başarıları ve başarısızlıkları takip etmemiz
+    mümkündür.
+ 
+Gene Murray Scott hocamızın 
+
+https://alignedleft.com/tutorials/d3/fundamentals
+
+linkindeki çalışması konunun özetidir. 
+
+Her hafta Murray Scott hocamızdan da evvel, Jia Zhang Hocamın adıylan (j.z.a.) ilk html dosyalarımızı
+yazmaya başlayabiliriz. Jia Zhang hocamızın sayfası https://dataminding.blog/
+adresinde. 
+
+>>
+ 
+ j.z.a.
+ 
+ 0. Github hesaplarımızı açtık ve bir script text editör indirdik
+ 1. Şimdi xizirerdi/DIA/Hafta1 içindeki index.html dosyamızı bilgisayarımıza indirelim.
+ 2. İndirdiğimiz dosyayı bir browserda açalım.
+ 3. Aynı dosyayı script text editör'de açalım. 
+ 4. divs denilen şeyler neler, ne değiller anlamaya çalışalım, HTML tagleri ile oynamayı, CSS     stillerini değiştirmeyi, düzenlemeyi deneyelim
+ 5. Bu altlığı kullanarak kendimize kendilerimize birbirimize sayfalar yapalım.
+ 6. Kendi github hesabımızda kendi depolarımıza kendi sayfalarımızı yükleyelim. 
+ 
+ Şimdi Murray Scott hocamızın Haftamiz1.pdf kitap kırıntısının 17. sayfadan sornaki javascript kısmına devam etmek daha kolay. https://libgen.is/book/index.php?md5=913356264E28E66DB80B53E2B7BC68E5 adresinde bu kitabın e-pub versiyonu da mevcut, isteyene.
+ 
+
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+
+
+
