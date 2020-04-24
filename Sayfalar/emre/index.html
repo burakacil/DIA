@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>BİSMİŞAH</title>
+        <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Kreon:wght@700&display=swap');
+        
+        .ilksoz {
+            font-size: 20px;
+            font-family: 'Kreon', serif;
+            font-weight: 700;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-row-gap: 5px;
+            grid-template-columns: auto auto auto;
+            padding: 30px;
+        }
+
+        .grid-item {
+            background-color: pink;
+            text-align: center;
+        }
+
+        .element {
+            clip-path: url("#my-clip");
+        }
+
+        sonsoz {
+            color:rgb(140, 223, 212); 
+            text-align: center;
+            font-size:20px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        body {background-color: darkgray;}
+        </style>
+
+    </head>
+    
+    <body>
+    <audio controls autoplay>
+        <source src="muzik.mp3" type="audio/mpeg">
+    </audio>
+    <div class="grid-container">
+        <div><svg width="200" height="30"></svg></div>
+        <div><svg width="500" height="30"><text x="45%" y="20" class="ilksoz" fill="pink"> Masumun Ahı</text></svg></div>
+        <div><svg width="200" height="30"></svg></div>
+
+        <div class="grid-item">
+            <svg width="200" height="200">
+                <path id="path">
+                       <animate attributeName="d" from="m0,110 h0" to="m0,110 h1100" dur="6.8s" begin="0s" repeatCount="indefinite"/>
+                   </path>
+                   <text font-size="15" font-family="Kreon" fill="black">
+                       <textPath xlink:href="#path">Sayfama hoşgeldiniz
+                   </textPath>
+                   </text>
+               </svg>
+        </div>
+
+
+        <div class="grid-item">
+            <svg width="200" height="200">
+                <circle cx="100" cy="100" r="90" fill=none stroke="pink" stroke-width="4"/>
+                <defs>
+                    <clipPath id="clip">
+                        <style>
+                        circle {
+                            fill: black;
+                        }
+                        </style>
+                        <circle cx="100" cy="100" r="90"/>
+                    </clipPath>
+                </defs>
+                <image height="90%" preserveAspectRatio="xMinYMin slice" width"90%" xlink:href="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg" clip-path="url(#clip)" />
+
+            <!-- https://bl.ocks.org/jebeck/raw/196406a3486985d2b92e/ -->
+            <!-- http://complexdan.com/svg-circleellipse-to-path-converter -->
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 400 400">
+                <defs>
+            <!-- The text path: see links above regarding coordinate system -->
+                    <path d="M0, 200a200, 200 0 1, 0 400, 0a200, 200 0 1, 0 -400, 0" id="txt-path"></path>
+                </defs>
+  
+                <text fill="darkgray" font-size="25.5" font-family="Kreon" font-weight="600">
+                    <!-- This is the magic -->
+                    <textPath startOffset="1" xlink:href="#txt-path">Giden kazansa illaki bilirdik</textPath>
+                </text>
+            </svg>
+        </div>
+        
+
+        <div class="grid-item">
+                <svg width="200" height="200">
+                    <path id="emrem">
+                           <animate attributeName="d" from="m0,110 h0" to="m0,110 h1100" dur="6.8s" begin="1.0s" repeatCount="indefinite"/>
+                       </path>
+                       <text font-size="15" font-family="Kreon" fill="black">
+                           <textPath xlink:href="#emrem">Ziyaretiniz için teşekkürler
+                       </textPath>
+                       </text>
+                </svg>
+    </div>
+    </body>
+</html>
